@@ -1,0 +1,6 @@
+---
+
+- hosts: all
+  sudo: yes
+  roles:
+  - { role: "../../", influxdb_reporting_disabled: true }

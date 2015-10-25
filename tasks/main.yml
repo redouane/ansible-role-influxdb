@@ -1,0 +1,35 @@
+---
+
+- name: check wether influxdb is installed
+  command: dpkg-query -l influxdb
+  register: influxdb_installed_check
+  failed_when: influxdb_installed_check.rc > 1 # do not trigger command failure when exiting with code 1
+  changed_when: influxdb_installed_check.rc == 1 # triggers changed only when package is not found
+
+- name: download influxdb package
+  get_url:
+    url=https://s3.amazonaws.com/influxdb/influxdb_{{ influxdb_version }}_amd64.deb
+    dest=/tmp/influxdb-{{ influxdb_version }}_amd64.deb
+    mode=440
+  when: influxdb_installed_check.rc == 1
+
+- name: install influxdb package
+  apt:
+    deb=/tmp/influxdb-{{ influxdb_version }}_amd64.deb
+    state=present
+  when: influxdb_installed_check.rc == 1
+
+- name: ensure influxdb configuration directory
+  file: path=/etc/influxdb state=directory
+
+- name: configure influxdb
+  template:
+    src=influxdb.conf.j2
+    dest=/tmp/influxdb.conf
+  register: configure_influxdb
+
+- name: combine partial config with influxdb's default configuration
+  shell: /opt/influxdb/influxd config -config /tmp/influxdb.conf > /etc/influxdb/influxdb.conf
+  changed_when: configure_influxdb.changed
+  notify:
+  - restart influxdb
