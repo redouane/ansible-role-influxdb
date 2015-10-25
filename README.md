@@ -1,6 +1,8 @@
 Ansible Role: InfluxDB
 ======================
 
+[![Build Status](https://travis-ci.org/redouane/ansible-role-influxdb.svg?branch=master)](https://travis-ci.org/redouane/ansible-role-influxdb)
+
 Installs and configures influxdb
 
 Requirements
