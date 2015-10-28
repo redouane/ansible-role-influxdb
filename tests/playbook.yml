@@ -2,5 +2,12 @@
 
 - hosts: all
   sudo: yes
+  vars:
+    influxdb_graphite_config: |
+      enabled = false
+      bind-address = ":2003"
+      protocol = "tcp"
+      templates = [ "metrics.net.* .measurement.host.interface.measurement" ]
+
   roles:
   - { role: "../../", influxdb_reporting_disabled: true }

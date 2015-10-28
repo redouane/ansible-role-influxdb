@@ -99,3 +99,7 @@ reporting-disabled = {{ influxdb_reporting_disabled|bool|lower }}
   retry-rate-limit = 0
   retry-interval = "1s"
 
+{% if influxdb_graphite_config %}
+[[graphite]]
+{{ influxdb_graphite_config }}
+{% endif %}

@@ -35,6 +35,9 @@ influxdb_retention_enabled: true
 influxdb_admin_enabled: true
 influxdb_admin_bind_address: :8083
 
+#graphite
+influxdb_graphite_config:
+
 ```
 
 License
