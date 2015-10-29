@@ -20,7 +20,7 @@
   when: influxdb_installed_check.rc == 1
 
 - name: ensure influxdb configuration directory
-  file: path=/etc/influxdb state=directory
+  file: path=/etc/opt/influxdb state=directory
 
 - name: configure influxdb
   template:
@@ -29,7 +29,7 @@
   register: configure_influxdb
 
 - name: combine partial config with influxdb's default configuration
-  shell: /opt/influxdb/influxd config -config /tmp/influxdb.conf > /etc/influxdb/influxdb.conf
+  shell: /opt/influxdb/influxd config -config /tmp/influxdb.conf > /etc/opt/influxdb/influxdb.conf
   changed_when: configure_influxdb.changed
   notify:
   - restart influxdb
