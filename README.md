@@ -15,13 +15,14 @@ Role Variables
 
 ```yaml
 
-influxdb_version: 0.9.4.2
+influxdb_version: 0.9.5
+influxdb_download_url: https://s3.amazonaws.com/influxdb
 
 #dirs
-influxdb_meta_dir: /var/opt/influxdb/meta
-influxdb_data_dir: /var/opt/influxdb/data
-influxdb_wal_dir: /var/opt/influxdb/wal
-influxdb_hh_dir: /var/opt/influxdb/hh
+influxdb_meta_dir: /var/lib/influxdb/meta
+influxdb_data_dir: /var/lib/influxdb/data
+influxdb_wal_dir: /var/lib/influxdb/wal
+influxdb_hh_dir: /var/lib/influxdb/hh
 
 #meta
 influxdb_reporting_disabled: false
@@ -39,6 +40,11 @@ influxdb_admin_bind_address: :8083
 influxdb_graphite_config:
 
 ```
+
+
+Todo
+----
+- fix role idempotency / influxdb reconfiguration  after /tmp/influxdb.conf gets erased (after machine restarts mostly)
 
 License
 -------

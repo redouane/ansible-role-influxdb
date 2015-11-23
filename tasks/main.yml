@@ -8,19 +8,16 @@
 
 - name: download influxdb package
   get_url:
-    url=https://s3.amazonaws.com/influxdb/influxdb_{{ influxdb_version }}_amd64.deb
-    dest=/tmp/influxdb-{{ influxdb_version }}_amd64.deb
+    url={{ influxdb_download_url }}/influxdb_{{ influxdb_version }}_amd64.deb
+    dest=/tmp/influxdb_{{ influxdb_version }}_amd64.deb
     mode=0440
   when: influxdb_installed_check.rc == 1
 
 - name: install influxdb package
   apt:
-    deb=/tmp/influxdb-{{ influxdb_version }}_amd64.deb
+    deb=/tmp/influxdb_{{ influxdb_version }}_amd64.deb
     state=present
   when: influxdb_installed_check.rc == 1
-
-- name: ensure influxdb configuration directory
-  file: path=/etc/opt/influxdb state=directory
 
 - name: configure influxdb
   template:
@@ -29,7 +26,7 @@
   register: configure_influxdb
 
 - name: combine partial config with influxdb's default configuration
-  shell: /opt/influxdb/influxd config -config /tmp/influxdb.conf > /etc/opt/influxdb/influxdb.conf
+  shell: influxd config -config /tmp/influxdb.conf > /etc/influxdb/influxdb.conf
   changed_when: configure_influxdb.changed
   notify:
   - restart influxdb
